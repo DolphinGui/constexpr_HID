@@ -87,7 +87,7 @@ static std::array<HID::byte, 99> multitouch_report_desc = {
         0x09, 0x30,                     //     Usage (X)
         0x09, 0x31,                     //     Usage (Y)
         0x26, 0xFF, 0x7F,               //     Logical Maximum (32767)
-        0x65, 0x00,                     //     Unit (None)  <-- probably needs real units?
+        0x65, 0x00,                     //     Unit (None)
         0x75, 0x10,                     //     Report Size (16)
         0x95, 0x02,                     //     Report Count (2)
         0x81, 0x02,                     //     Input (variable,absolute)
