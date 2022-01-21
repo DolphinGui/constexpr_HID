@@ -1,6 +1,6 @@
 #pragma once
 #include "constexpr_HID/internal.hpp"
-#include "tuplet/tuple.hpp"
+#include <tuple>
 #include <cstdint>
 #include <sys/types.h>
 
@@ -57,10 +57,10 @@ struct collection_end {
 } // namespace internal
 template <typename... T> struct collection {
   internal::collection_start start;
-  tuplet::tuple<T...> members;
+  std::tuple<T...> members;
   internal::collection_end end;
   constexpr collection(collection_type t, T... members)
-      : start(t), members(tuplet::make_tuple(members...)) {}
+      : start(t), members(std::make_tuple(members...)) {}
 };
 template<uint8_t tag>
 using iosmall = small_item<io8, prefix_type::main, tag>;
