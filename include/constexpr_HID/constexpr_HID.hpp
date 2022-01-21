@@ -6,6 +6,8 @@
 #include "internal.hpp"
 #include <array>
 #include <cstdint>
+#include <tuple>
+
 
 namespace HID {
 #pragma pack(push, 1)
@@ -30,7 +32,7 @@ template <typename usage_type> struct usage_range {
 
 template <typename usage_type, typename... T> struct descriptor {
   usage_pair<usage_type> pair;
-  tuplet::tuple<T...> members;
+  std::tuple<T...> members;
   constexpr bool validate_descriptor() {
     prefix_type currrent;
     unsigned int pushs;
@@ -39,11 +41,12 @@ template <typename usage_type, typename... T> struct descriptor {
 
 public:
   constexpr descriptor(usage_type t, T... members)
-      : pair(t), members(tuplet::make_tuple(members...)) {
+      : pair(t), members(std::make_tuple(members...)) {
     validate_descriptor();
   }
 };
-
+static_assert(sizeof(std::tuple<uint8_t, uint8_t, uint8_t>) == 3,
+              "tuple size is weird");
 template <size_t size> using raw = std::array<uint8_t, size>;
 
 #pragma pack(pop)

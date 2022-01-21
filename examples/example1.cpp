@@ -1,9 +1,6 @@
-
-#include "constexpr_HID/byte.hpp"
 #include "constexpr_HID/constexpr_HID.hpp"
-#include "constexpr_HID/global_items.hpp"
-#include "constexpr_HID/main_items.hpp"
 #include "constexpr_HID/uses_types.hpp"
+#include "constexpr_HID/byte.hpp"
 
 #include <algorithm>
 #include <array>
@@ -16,7 +13,7 @@ template <typename T> using raw_array = std::array<HID::byte, sizeof(T)>;
 
 using namespace HID;
 
-constexpr static std::array<HID::byte, 85> joystick_report_desc = {
+constexpr std::array<HID::byte, 85> joystick_report_desc = {
     0x05, 0x01,       // Usage Page (Generic Desktop)
     0x09, 0x04,       // Usage (Joystick)
     0xA1, 0x01,       // Collection (Application)
@@ -61,7 +58,7 @@ constexpr static std::array<HID::byte, 85> joystick_report_desc = {
     0xC0              // End Collection
 };
 
-static std::array<HID::byte, 99> multitouch_report_desc = {
+constexpr std::array<HID::byte, 99> multitouch_report_desc = {
         0x05, 0x0D,                     // Usage Page (Digitizer)
         0x09, 0x04,                     // Usage (Touch Screen)
         0xa1, 0x01,                     // Collection (Application)
@@ -123,7 +120,7 @@ auto joystick_descriptor = descriptor(
       logical_extent(0_u8, 7_u8),
       physical_extent(0_u8, uint16_t(315)),
       report_type(4_u8, 1_u8),
-      raw<2>{0x65, 0x14},
+      uint8_t(0x65), uint8_t(0x00), //units, none
       usage_pair(uses::generic_desktop::hat_switch),
       input<io8>(io8{.array_or_variable = IOF::p2::variable,
                     .no_null_or_null = IOF::p7::null_state}),
@@ -154,33 +151,33 @@ auto multitouch_descriptor = descriptor(
       report_type(uint8_t(1),uint8_t(1)),
       input<io8>(io8{.array_or_variable=IOF::p2::variable}),
       usage(uses::digitizer::Contact_Identifier),
-      internal::logical_maximum<>(int8_t(127)),
+      logical_maximum<>(int8_t(127)),
       report_type(uint8_t(7),uint8_t(1)),
       input<io8>(io8{.array_or_variable=IOF::p2::variable}),
       usage(uses::digitizer::Tip_Pressure),
-      internal::logical_maximum<int16_t>(255),
+      logical_maximum<int16_t>(255),
       report_type(uint8_t(8),uint8_t(1)),
       input<io8>(io8{.array_or_variable=IOF::p2::variable}),
       usage_page(uses::page_type::generic_desktop),
       usage(uses::generic_desktop::X),
       usage(uses::generic_desktop::Y),
-      internal::logical_maximum<int16_t>(32767),
+      logical_maximum<int16_t>(32767),
       uint8_t(0x65), uint8_t(0x00), // units, none
       report_type(uint8_t(16),uint8_t(2)),
       input<io8>(io8{.array_or_variable = IOF::p2::variable})
     ),
     usage_page(uses::page_type::digitizer),
-    internal::logical_maximum<int32_t>(65535),
+    logical_maximum<int32_t>(65535),
     report_type(uint8_t(16),uint8_t(1)),
     usage(uses::digitizer::Scan_Time),
     input<io8>(io8{.array_or_variable=IOF::p2::variable}),
     usage(uses::digitizer::Contact_Count),
-    internal::logical_maximum<>(127),
+    logical_maximum<>(127),
     report_type(uint8_t(8),uint8_t(1)),
     input<io8>(io8{.array_or_variable=IOF::p2::variable}),
     usage_page(uses::page_type::digitizer),
     usage(uses::digitizer::Contact_Count_Maximum),
-    internal::logical_maximum<>(10),
+    logical_maximum<>(10),
     report_type(uint8_t(8),uint8_t(1)),
     feature<io8>(io8{.array_or_variable=IOF::p2::variable})
   )
@@ -200,6 +197,7 @@ void test(const raw_array<T>& raw, T test, std::string_view error) {
     std::cout << "\nSizeof T: " << sizeof(T) << '\n';
   }
 }
+
 
 void dump(auto t){
   raw_array<decltype(t)> data;
