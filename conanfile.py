@@ -12,7 +12,13 @@ class ConstexprHIDConan(ConanFile):
     description = "A c++17 library for making HID descriptors"
     topics = ("HID", "c++17", "conan")
     no_copy_source = True
-    exports_sources = "include/*"
+    exports_sources = "include/*", "CMakeLists.txt", "example.cpp"
+
+    def build(self): # this is not building a library, just tests
+        cmake = CMake(self)
+        cmake.configure()
+        cmake.build()
+        cmake.test()
 
     def package(self):
         self.copy("*.hpp")

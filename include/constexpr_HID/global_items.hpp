@@ -20,8 +20,6 @@ using report_size = small_item<unsigned_type, prefix_type::global, 7>;
 template <std::unsigned_integral unsigned_type>
 using report_count = small_item<unsigned_type, prefix_type::global, 9>;
 } // namespace internal
-template <typename Int = unsigned char>
-using logical_maximum = internal::logical_maximum<Int>;
 template <std::unsigned_integral size_type, std::unsigned_integral count_type>
 struct report_type {
   internal::report_size<size_type> size;
