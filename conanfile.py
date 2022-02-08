@@ -1,6 +1,6 @@
 import os
 
-from conans import ConanFile, tools
+from conans import ConanFile, tools, CMake
 
 
 class ConstexprHIDConan(ConanFile):
@@ -13,7 +13,11 @@ class ConstexprHIDConan(ConanFile):
     topics = ("HID", "c++17", "conan")
     no_copy_source = True
     exports_sources = "include/*", "CMakeLists.txt", "example.cpp"
-
+    requires = "tuplet/1.0.0"
+    generators = "cmake_find_package"
+    build_requires = "fmt/8.1.1"
+    build_policy = "missing"
+    
     def build(self): # this is not building a library, just tests
         cmake = CMake(self)
         cmake.configure()
