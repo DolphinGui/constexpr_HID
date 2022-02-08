@@ -4,8 +4,9 @@
 #include "constexpr_HID/local_items.hpp"
 #include "constexpr_HID/main_items.hpp"
 #include "internal.hpp"
-#include <array>
-#include <cstdint>
+#include <limits>
+#include <tuplet/tuple.hpp>
+#include <type_traits>
 
 namespace HID {
 #pragma pack(push, 1)
@@ -31,16 +32,25 @@ template <typename usage_type> struct usage_range {
 template <typename usage_type, typename... T> struct descriptor {
   usage_pair<usage_type> pair;
   tuplet::tuple<T...> members;
-  constexpr bool validate_descriptor() {
-    prefix_type currrent;
-    unsigned int pushs;
-    return true;
-  }
+
+  void static iteration(auto &&part) {}
 
 public:
   constexpr descriptor(usage_type t, T... members)
       : pair(t), members(tuplet::make_tuple(members...)) {
-    validate_descriptor();
+    prefix_type current;
+    unsigned int pushs = 0;
+    unsigned int min = std::numeric_limits<unsigned int>::max();
+    unsigned int max = std::numeric_limits<unsigned int>::max();
+
+    /*
+    rn the constexpr support necessary to actually validate stuff
+    at compile time only exists in c++23, which basically doesn't
+    exist at the moment. So for now, implementing this is a long
+    way off.
+    */
+    tuplet::apply([&](auto &&...args) { ((iteration(args)), ...); },
+                  this->members);
   }
 };
 

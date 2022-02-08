@@ -13,7 +13,7 @@ class ConstexprHIDConan(ConanFile):
     topics = ("HID", "c++17", "conan")
     no_copy_source = True
     exports_sources = "include/*", "CMakeLists.txt", "example.cpp"
-    requires = "tuplet/1.0.0"
+    requires = "tuplet/1.1.2"
     generators = "cmake_find_package"
     build_requires = "fmt/8.1.1"
     build_policy = "missing"

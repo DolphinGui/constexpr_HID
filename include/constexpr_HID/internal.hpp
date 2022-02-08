@@ -1,10 +1,7 @@
 #pragma once
 
 #include <array>
-#include <cstddef>
 #include <cstdint>
-#include <type_traits>
-#include <utility>
 
 namespace HID {
 #pragma pack(push, 1)
@@ -120,6 +117,9 @@ enum struct preferred_colors : uint8_t;
 #endif
 } // namespace uses
 namespace internal {
+template <class = int> inline constexpr bool always_false = false;
+template <class = int> inline constexpr bool always_true = true;
+
 template <typename T> struct range_traits {};
 // this is super jank but I can't think of a better way to do this.
 template <typename usage_type> constexpr auto typeswitch(usage_type usage) {
@@ -182,10 +182,12 @@ template <typename usage_type> constexpr auto typeswitch(usage_type usage) {
     return uses::page_type::camera_controls;
   }
 }
-template <typename data, typename data2,typename minimum, typename maximum> struct extent {
+template <typename data, typename data2, typename minimum, typename maximum>
+struct extent {
   minimum min;
   maximum max;
-  constexpr extent(data min, data2 max) : min(min), max(max) {}
+  constexpr extent(data min, data2 max) : min(min), max(max) {
+  }
 };
 } // namespace internal
 #pragma pack(pop)

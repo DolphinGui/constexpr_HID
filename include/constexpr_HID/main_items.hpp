@@ -1,8 +1,6 @@
 #pragma once
 #include "constexpr_HID/internal.hpp"
 #include <tuplet/tuple.hpp>
-#include <cstdint>
-#include <sys/types.h>
 
 namespace HID {
 #pragma pack(push, 1)

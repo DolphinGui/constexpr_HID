@@ -133,7 +133,7 @@ auto joystick_descriptor = descriptor(
                        .no_null_or_null = IOF::p7::null_state}),
         usage_pair(uses::generic_desktop::pointer),
         collection(
-            collection_type::physical, logical_extent(0_u8, uint16_t(1023)),
+            collection_type::physical, logical_extent(uint8_t(0), uint16_t(1023)),
             report_type(10_u8, 4_u8), usage(uses::generic_desktop::X),
             usage(uses::generic_desktop::Y), usage(uses::generic_desktop::Z),
             usage(uses::generic_desktop::Rz),
